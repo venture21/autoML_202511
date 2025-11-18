@@ -13,6 +13,7 @@
 ## 시스템 요구사항
 
 - Python 3.8 이상
+- Anaconda (권장)
 - Git
 
 ## 설치 및 실행 방법
@@ -24,19 +25,21 @@ git clone https://github.com/venture21/autoML_202511.git
 cd autoML_202511
 ```
 
-### 2. 가상환경 생성 (권장)
+### 2. Anaconda 가상환경 생성 (권장)
 
 **Windows:**
 ```bash
-python -m venv venv
-venv\Scripts\activate
+conda create -n titanic python=3.8
+conda activate titanic
 ```
 
 **Linux/Mac:**
 ```bash
-python3 -m venv venv
-source venv/bin/activate
+conda create -n titanic python=3.8
+conda activate titanic
 ```
+
+**참고:** Anaconda가 설치되어 있지 않다면 [Anaconda 공식 홈페이지](https://www.anaconda.com/download)에서 다운로드하여 설치하세요.
 
 ### 3. 필요한 패키지 설치
 
