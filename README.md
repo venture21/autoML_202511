@@ -12,7 +12,7 @@
 
 ## 시스템 요구사항
 
-- Python 3.8 이상
+- Python 3.11 이상
 - Anaconda (권장)
 - Git
 
@@ -29,13 +29,13 @@ cd autoML_202511
 
 **Windows:**
 ```bash
-conda create -n titanic python=3.8
+conda create -n titanic python=3.11
 conda activate titanic
 ```
 
 **Linux/Mac:**
 ```bash
-conda create -n titanic python=3.8
+conda create -n titanic python=3.11
 conda activate titanic
 ```
 
