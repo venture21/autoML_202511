@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오류 - 타이타닉 생존 예측</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .error-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #ef4444;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            border: 2px solid #fecaca;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            color: #991b1b;
+            word-break: break-word;
+        }
+
+        .error-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .error-detail {
+            font-family: monospace;
+            font-size: 0.9em;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-icon">⚠️</div>
+        <h1>오류가 발생했습니다</h1>
+        <p style="color: #666; margin-bottom: 20px;">
+            예측 과정에서 문제가 발생했습니다.
+        </p>
+
+        <div class="error-message">
+            <div class="error-title">오류 상세 정보:</div>
+            <div class="error-detail">{{ error }}</div>
+        </div>
+
+        <p style="color: #666; margin: 20px 0;">
+            모든 필수 항목을 올바르게 입력했는지 확인해주세요.
+        </p>
+
+        <a href="/" class="btn">처음으로 돌아가기</a>
+    </div>
+</body>
+</html>

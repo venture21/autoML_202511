@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예측 결과 - 타이타닉 생존 예측</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .result-icon {
+            text-align: center;
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .survived {
+            color: #10b981;
+        }
+
+        .died {
+            color: #ef4444;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1em;
+        }
+
+        .probability-container {
+            margin: 30px 0;
+        }
+
+        .probability-bar {
+            background: #f0f0f0;
+            border-radius: 10px;
+            height: 40px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .probability-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .survival-bar {
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+
+        .death-bar {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+
+        .info-card {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #111827;
+            font-weight: 600;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .probability-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .detail-box {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .detail-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 600px) {
+            .button-group {
+                flex-direction: column;
+            }
+
+            .container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% if result.survived == 1 %}
+        <div class="result-icon">✅</div>
+        <h1 class="survived">생존 예측</h1>
+        <p class="subtitle">이 승객은 생존했을 가능성이 높습니다</p>
+        {% else %}
+        <div class="result-icon">❌</div>
+        <h1 class="died">사망 예측</h1>
+        <p class="subtitle">이 승객은 사망했을 가능성이 높습니다</p>
+        {% endif %}
+
+        <div class="probability-container">
+            <div class="probability-label">
+                <span>생존 확률</span>
+                <span>{{ "%.1f" | format(result.probability_survival * 100) }}%</span>
+            </div>
+            <div class="probability-bar">
+                <div class="probability-fill survival-bar"
+                     style="width: {{ result.probability_survival * 100 }}%">
+                    {{ "%.1f" | format(result.probability_survival * 100) }}%
+                </div>
+            </div>
+
+            <div class="probability-label">
+                <span>사망 확률</span>
+                <span>{{ "%.1f" | format(result.probability_death * 100) }}%</span>
+            </div>
+            <div class="probability-bar">
+                <div class="probability-fill death-bar"
+                     style="width: {{ result.probability_death * 100 }}%">
+                    {{ "%.1f" | format(result.probability_death * 100) }}%
+                </div>
+            </div>
+        </div>
+
+        <div class="info-card">
+            <div class="detail-title">📋 승객 정보</div>
+            <div class="info-row">
+                <span class="info-label">이름</span>
+                <span class="info-value">{{ result.passenger_info.name }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">호칭</span>
+                <span class="info-value">{{ result.passenger_info.title }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">객실 등급</span>
+                <span class="info-value">{{ result.passenger_info.pclass }}등급</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">성별</span>
+                <span class="info-value">{{ result.passenger_info.sex }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">나이</span>
+                <span class="info-value">{{ "%.0f" | format(result.passenger_info.age) }}세</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">가족 구성원 수</span>
+                <span class="info-value">{{ result.passenger_info.family_size }}명</span>
+            </div>
+        </div>
+
+        <div class="detail-box">
+            <div class="detail-title">ℹ️ 모델 정보</div>
+            <p style="color: #6b7280; line-height: 1.6;">
+                이 예측은 LightGBM 기계학습 모델을 사용하여 생성되었습니다.
+                타이타닉 승객 데이터를 기반으로 학습되었으며,
+                객실 등급, 성별, 나이, 가족 구성 등의 요소를 고려합니다.
+            </p>
+        </div>
+
+        <div class="button-group">
+            <a href="/" class="btn btn-primary">다시 예측하기</a>
+            <button onclick="window.print()" class="btn btn-secondary">결과 인쇄</button>
+        </div>
+    </div>
+</body>
+</html>

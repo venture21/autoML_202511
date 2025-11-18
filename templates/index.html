@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>타이타닉 생존 예측 서비스</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .info-text {
+            font-size: 0.85em;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .ship-icon {
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="ship-icon">⚓</div>
+        <h1>타이타닉 생존 예측</h1>
+        <p class="subtitle">승객 정보를 입력하고 생존 확률을 예측하세요</p>
+
+        <form action="/predict" method="POST">
+            <div class="form-group">
+                <label for="name">이름 (Name) *</label>
+                <input type="text" id="name" name="name" placeholder="예: Mr. John Smith" required>
+                <p class="info-text">호칭(Mr, Mrs, Miss 등)을 포함해주세요</p>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pclass">객실 등급 (Pclass) *</label>
+                    <select id="pclass" name="pclass" required>
+                        <option value="">선택하세요</option>
+                        <option value="1">1등급 (Upper)</option>
+                        <option value="2">2등급 (Middle)</option>
+                        <option value="3">3등급 (Lower)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="sex">성별 (Sex) *</label>
+                    <select id="sex" name="sex" required>
+                        <option value="">선택하세요</option>
+                        <option value="male">남성 (Male)</option>
+                        <option value="female">여성 (Female)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="age">나이 (Age) *</label>
+                    <input type="number" id="age" name="age" placeholder="예: 30" min="0" max="120" step="0.1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="fare">운임 (Fare) *</label>
+                    <input type="number" id="fare" name="fare" placeholder="예: 50.0" min="0" step="0.01" required>
+                    <p class="info-text">단위: 파운드(£)</p>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="sibsp">형제/배우자 수 (SibSp) *</label>
+                    <input type="number" id="sibsp" name="sibsp" placeholder="예: 1" min="0" max="10" value="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="parch">부모/자녀 수 (Parch) *</label>
+                    <input type="number" id="parch" name="parch" placeholder="예: 0" min="0" max="10" value="0" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="embarked">승선 항구 (Embarked) *</label>
+                    <select id="embarked" name="embarked" required>
+                        <option value="">선택하세요</option>
+                        <option value="C">셔부르 (Cherbourg)</option>
+                        <option value="Q">퀸즈타운 (Queenstown)</option>
+                        <option value="S">사우샘프턴 (Southampton)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="cabin">객실 번호 (Cabin)</label>
+                    <input type="text" id="cabin" name="cabin" placeholder="예: C85 (선택사항)">
+                    <p class="info-text">선택사항</p>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">🔮 생존 확률 예측하기</button>
+        </form>
+    </div>
+</body>
+</html>
